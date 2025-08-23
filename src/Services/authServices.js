@@ -29,3 +29,24 @@ export async function sendLoginData(userData) {
         
     }
 }
+
+
+export async function getUserDataApi() {
+    
+    try{
+        let {data}= await axios.get('https://linked-posts.routemisr.com/users/profile-data',{
+            headers:{
+                token:localStorage.getItem('token'),
+                Authorization: "Bearer " + localStorage.getItem("token"),
+            }
+        })
+        console.log(data);
+        return data;
+    
+    }
+    catch(err){
+        console.log(err.response.data);
+        return err.response.data;
+        
+    }
+}

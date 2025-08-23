@@ -19,6 +19,7 @@ export const schema=zod.object({
         const now = new Date().getFullYear();
         const average=now-userAge;
         return average>=18
+    
     },'User Age must be bigger than 18')
 
 

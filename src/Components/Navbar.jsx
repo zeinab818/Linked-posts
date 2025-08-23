@@ -1,42 +1,150 @@
-import React, {  useContext, useState } from 'react'
-import {Navbar as HeroNavbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@heroui/react";
-import { NavLink, useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from "react";
+import {
+    Navbar as HeroNavbar,
+    NavbarBrand,
+    NavbarContent,
+    NavbarItem,
+    } from "@heroui/react";
+    import { NavLink, useLocation, useNavigate } from "react-router-dom";
+    import { AuthContext } from "../Context/AuthContext";
 
-import { AuthContext } from '../Context/AuthContext';
-export default function Navbar() {
+    export default function Navbar() {
+    const { isLoggedIn, setIsLoggedIn, setUserData } = useContext(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
 
-    const [isloogesIn] = useState(localStorage.getItem('token')!=null)
-    const {setIsLoggedIn}=useContext(AuthContext);
-    
-    const navigate=useNavigate();
-    function logout(){
-        localStorage.removeItem('token');
-        setIsLoggedIn(null)
-        navigate('/login');
+    const [open, setOpen] = useState(false);
+
+    function logout() {
+        localStorage.removeItem("token");
+        setIsLoggedIn(false);
+        setUserData(null);
+        navigate("/login");
+        setOpen(false); 
     }
- 
-    return <>
-        <HeroNavbar>
+
+    function toggleMenu() {
+        setOpen(!open);
+    }
+
+    return (
+        <>
+        <HeroNavbar className="flex dark:*:bg-gray-700 justify-center items-center px-4 dark:bg-gray-900 ">
             <NavbarBrand>
-                
+            <NavLink to={"/"}>
                 <p className="font-bold text-inherit">Linked Posts</p>
+            </NavLink>
             </NavbarBrand>
-            <NavbarContent className="hidden sm:flex gap-4" justify="end">
-                {isloogesIn?
-                    <NavbarItem onClick={logout} className='cursor-pointer'>
-                        LogOut
-                    </NavbarItem>:
+
+            {/* Desktop Links */}
+            <NavbarContent className="hidden md:flex gap-4" justify="end">
+            {isLoggedIn ? (
                 <>
+                <NavbarItem onClick={logout} className="cursor-pointer">
+                    LogOut
+                </NavbarItem>
+                {location.pathname === "/profile" ? (
                     <NavbarItem>
-                        <NavLink to={'/register'}>Sign Up</NavLink>
+                    <NavLink to="/">Home</NavLink>
                     </NavbarItem>
+                ) : (
                     <NavbarItem>
-                        <NavLink to={'/login'}>Log IN</NavLink>
+                    <NavLink to="/profile">Profile</NavLink>
                     </NavbarItem>
+                )}
+            
                 </>
+            ) : (
+                <>
+                <NavbarItem>
+                    <NavLink to={"/register"}>Sign Up</NavLink>
+                </NavbarItem>
+                <NavbarItem>
+                    <NavLink to={"/login"}>Log In</NavLink>
+                </NavbarItem>
+                </>
+            )}
+            </NavbarContent>
+
+            {/* Mobile Menu Icon */}
+            <div
+            onClick={toggleMenu}
+            className="md:hidden cursor-pointer text-gray-800"
+            >
+            {open ? (
+                // Close Icon
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-7 h-7"
+                >
+                <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                />
+                </svg>
+            ) : (
+                // Hamburger Icon
+             <>
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-7 h-7"
+                >
+                <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                />
+                </svg>
+                 
+             </>
+            )}
+            </div>
+             <svg  className="cursor-pointer size-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+                </svg>
+        </HeroNavbar>
+
+        {/* Mobile Dropdown Menu */}
+        {open && (
+            <div className="md:hidden bg-gray-100 shadow-md flex flex-col gap-4 p-4">
+            {isLoggedIn ? (
+                <>
+                <button onClick={logout} className="text-left">
+                    LogOut
+                </button>
+                {location.pathname === "/profile" ? (
+                    <NavLink to="/" onClick={() => setOpen(false)}>
+                    Home
+                    </NavLink>
+                ) : (
+                    <NavLink to="/profile" onClick={() => setOpen(false)}>
+                    Profile
+                    </NavLink>
+                )
                 }
                 
-            </NavbarContent>
-        </HeroNavbar>
-    </>
-}
+                </>
+            ) : (
+                <>
+                <NavLink to="/register" onClick={() => setOpen(false)}>
+                    Sign Up
+                </NavLink>
+                <NavLink to="/login" onClick={() => setOpen(false)}>
+                    Log In
+                </NavLink>
+                </>
+            )}
+            </div>
+        )}
+        </>
+    );
+    }

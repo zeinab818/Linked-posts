@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 
 
 export default function ProtectedRoute({children}) {
     
-    const {isLoggedIn} = useState(AuthContext)
+    const {isLoggedIn} = useContext(AuthContext)
     console.log(isLoggedIn);
-    return isLoggedIn? children : <Navigate to={'/'}/>
+    return isLoggedIn? children : <Navigate to={'/login'}/>
     
 }

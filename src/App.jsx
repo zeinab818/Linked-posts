@@ -10,12 +10,17 @@ import Register from './Pages/Register';
 import NotFound from './Pages/NotFound';
 import ProtectedRoute from './Layouts/ProtectedRoute';
 import AuthProtectedRoute from './Layouts/AuthProtectedRoute';
+import ChangePassword from './Pages/ChangePassword';
+import UploadPhoto from './Pages/UploadPhoto';
 
 const router=createBrowserRouter([
   {path:'', element: <MainLayout/> , children:[
     {index:true , element: <ProtectedRoute><FeedPage/></ProtectedRoute>},
     {path:'profile' , element: <ProtectedRoute><ProfilePage/></ProtectedRoute>},
-    {path:'post-details' , element: <ProtectedRoute><PostDetailsPage/></ProtectedRoute>},
+    { path: 'uploadPhoto', element: <ProtectedRoute><UploadPhoto /></ProtectedRoute> },
+    { path: 'changePassword', element: <ProtectedRoute><ChangePassword /></ProtectedRoute> },
+
+    {path:'post-details/:id' , element: <ProtectedRoute><PostDetailsPage/></ProtectedRoute>},
     {path:'*' , element: <NotFound/>},
   ]},
   {path:'', element: <AuthLayout/> , children:[
