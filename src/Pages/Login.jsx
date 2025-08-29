@@ -46,7 +46,7 @@ const {handleSubmit , register , formState:{errors , touchedFields}}= useForm({
     return <>
     
         <div className="login dark:bg-gray-900 w-full md:w-2/3 lg:w-1/2 max-w-md mx-auto bg-white py-10 px-6 rounded-2xl shadow-2xl">
-            <h1 className="text-3xl mb-4 md:text-center">Login Now</h1>
+            <h1 className="text-3xl mb-4 ">Login Now</h1>
             <form onSubmit={handleSubmit(signUp)} className="flex flex-col gap-4">
                 <Input 
                 isInvalid={Boolean(errors.email && touchedFields.email)} 

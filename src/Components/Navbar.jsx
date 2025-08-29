@@ -32,7 +32,7 @@ import {
         <HeroNavbar className="flex justify-center items-center px-4 dark:bg-gray-900 dark:text-gray-100">
             <NavbarBrand>
             <NavLink to={"/"}>
-                <p className="font-bold text-inherit">Linked Posts</p>
+                <p className="font-bold text-inherit">Linkora</p>
             </NavLink>
             </NavbarBrand>
 
