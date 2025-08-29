@@ -45,16 +45,36 @@ const {handleSubmit , register , formState:{errors , touchedFields}}= useForm({
     }
     return <>
     
-            <div className="login dark:bg-gray-900 lg:w-1/2 md:w-2/3 sl:w-full mx-auto bg-white py-10 px-6 rounded-2xl shadow-2xl min-w-md">
-                <h1 className='text-3xl mb-4'>Login Now</h1>
-                <form onSubmit={handleSubmit(signUp)} className='flex flex-col gap-4'>
-                    <Input  isInvalid={Boolean(errors.email && touchedFields.email)} errorMessage={errors.email?.message}   variant='bordered' type="email" label="Email" {...register('email')}/>
-                    <Input isInvalid={Boolean(errors.password && touchedFields.password)} errorMessage={errors.password?.message}   variant='bordered' type="password" label="Password" {...register('password')}/>
-                    
-                    <Button className='dark:bg-gray-800' isLoading={loading} type='submit'>Login</Button>
-                    <div>If you don't have an account please , <Link to={'/register'} className='text-blue-900 dark:text-gray-400 text-xl'>Sign Up</Link></div>
-                    {apiError && <span className='text-center text-red-800'>{apiError}</span>}
-                </form>
-            </div>
+        <div className="login dark:bg-gray-900 w-full md:w-2/3 lg:w-1/2 max-w-md mx-auto bg-white py-10 px-6 rounded-2xl shadow-2xl">
+            <h1 className="text-3xl mb-4 md:text-center">Login Now</h1>
+            <form onSubmit={handleSubmit(signUp)} className="flex flex-col gap-4">
+                <Input 
+                isInvalid={Boolean(errors.email && touchedFields.email)} 
+                errorMessage={errors.email?.message} 
+                variant="bordered" 
+                type="email" 
+                label="Email" 
+                {...register('email')} 
+                />
+                <Input 
+                isInvalid={Boolean(errors.password && touchedFields.password)} 
+                errorMessage={errors.password?.message} 
+                variant="bordered" 
+                type="password" 
+                label="Password" 
+                {...register('password')} 
+                />
+                
+                <Button className="dark:bg-gray-800" isLoading={loading} type="submit">
+                Login
+                </Button>
+                <div>
+                If you don't have an account please, 
+                <Link to="/register" className="text-blue-900 dark:text-gray-400 text-xl"> Sign Up</Link>
+                </div>
+                {apiError && <span className="text-center text-red-800">{apiError}</span>}
+            </form>
+    </div>
+
     </>
 }

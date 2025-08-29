@@ -101,7 +101,7 @@ export default function PostCard({ post, commentLimit, callback }) {
                             variant="bordered"
                             placeholder="comment........"
                         />
-                        <Button className='dark:bg-gray-700' isLoading={loading} type="submit" disabled={commentContent.length < 2} color="primary">
+                        <Button className='dark:bg-gray-700 px-6' isLoading={loading} type="submit" disabled={commentContent.length < 2} color="primary">
                             Add comment
                         </Button>
                     </form>

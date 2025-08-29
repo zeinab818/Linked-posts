@@ -37,17 +37,30 @@ export default function UploadPhoto() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="uploadPhoto dark:bg-gray-900 lg:w-1/2 md:w-2/3 sl:w-full mx-auto bg-white py-10 px-6 rounded-2xl shadow-2xl min-w-md">
-      <h1 className="text-3xl mb-4">Upload Profile Photo</h1>
-      <Input type="file" onChange={handleFileChange}  classNames={{
+  <div className="flex justify-center items-center min-h-screen">
+  <div className="uploadPhoto dark:bg-gray-900 w-full md:w-2/3 lg:w-1/2 max-w-md bg-white py-10 px-6 rounded-2xl shadow-2xl">
+    <h1 className="text-3xl mb-4">Upload Profile Photo</h1>
+
+    <Input 
+      type="file" 
+      onChange={handleFileChange}  
+      classNames={{
         inputWrapper: "dark:bg-gray-700"
-      }}/>
-      <Button  onClick={handleUpload} isLoading={loading} color="primary" className="mt-4 dark:bg-gray-800">
-        Upload
-      </Button>
-      {error && <p className="text-red-800 mt-2">{error}</p>}
-    </div>
-    </div>
+      }}
+    />
+
+    <Button  
+      onClick={handleUpload} 
+      isLoading={loading} 
+      color="primary" 
+      className="mt-4 dark:bg-gray-800"
+    >
+      Upload
+    </Button>
+
+    {error && <p className="text-red-800 mt-2">{error}</p>}
+  </div>
+</div>
+
   );
 }
