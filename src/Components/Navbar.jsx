@@ -1,15 +1,19 @@
 import React, { useContext, useState } from "react";
 import {
+    addToast,
     Navbar as HeroNavbar,
     NavbarBrand,
     NavbarContent,
     NavbarItem,
+    ToastProvider,
     } from "@heroui/react";
     import { NavLink, useLocation, useNavigate } from "react-router-dom";
     import { AuthContext } from "../Context/AuthContext";
 
     export default function Navbar({mode,changeMood}) {
     const { isLoggedIn, setIsLoggedIn, setUserData } = useContext(AuthContext);
+    const [placement, setPlacement] = React.useState("top-center");
+
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -21,6 +25,13 @@ import {
         setUserData(null);
         navigate("/login");
         setOpen(false); 
+         addToast({
+        title: "Logged Out",
+        description: "You logged out successfully",
+        color: "warning",
+    });
+    navigate("/login");
+    setOpen(false);
     }
 
     function toggleMenu() {
@@ -29,10 +40,15 @@ import {
 
     return (
         <>
+            <div className="fixed z-[100]">
+                    <ToastProvider placement={placement} toastOffset={placement.includes("top") ? 60 : 0} />
+            </div>
         <HeroNavbar className="flex justify-center items-center px-4 dark:bg-gray-900 dark:text-gray-100">
             <NavbarBrand>
             <NavLink to={"/"}>
-                <p className="font-bold text-inherit">Linkora</p>
+                <p className="font-bold text-inherit">Linkora
+
+                </p>
             </NavLink>
             </NavbarBrand>
 
@@ -124,7 +140,7 @@ import {
 
         {/* Mobile Dropdown Menu */}
         {open && (
-            <div className="md:hidden  dark:bg-gray-900 dark:text-gray-100 bg-gray-100 shadow-md flex flex-col gap-4 p-4">
+            <div className="md:hidden fixed left-0 right-0 z-40 dark:bg-gray-900 dark:text-gray-100 bg-gray-100 shadow-md flex flex-col gap-4 p-4">
             {isLoggedIn ? (
                 <>
                 <button onClick={logout} className="text-left cursor-pointer">

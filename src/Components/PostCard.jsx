@@ -4,7 +4,7 @@ import PostHeader from './Card/PostHeader'
 import PostBody from './Card/PostBody'
 import PostFooter from './Card/PostFooter'
 import Comment from './Comment'
-import { Button, Input } from '@heroui/react'
+import { addToast, Button, Input, ToastProvider } from '@heroui/react'
 import { createCommentApi, getPostCommentsApi } from '../Services/createComment'
 import DropdownAction from './DropdownAction'
 import CreatePost from './Card/CreatePost'
@@ -22,6 +22,8 @@ export default function PostCard({ post, commentLimit, callback }) {
     const [commentContent, setCommentContent] = useState('')
     const [loading, setLoading] = useState(false)
     const [comments, setComments] = useState(post.comments || [])
+    const [placement, setPlacement] = React.useState("top-center");
+    
 
     const [editingPost, setEditingPost] = useState(false)
     const [editData, setEditData] = useState({ body: post.body, image: post.image, id: post.id })
@@ -34,7 +36,11 @@ export default function PostCard({ post, commentLimit, callback }) {
             setComments(response.comments) 
             setCommentContent('')
             if (typeof callback === 'function') await callback() 
-                
+                addToast({
+                    title: "Success",
+                    description: "comment created successfully" ,
+                    color: "success",
+                })
         }
         setLoading(false)
     }
@@ -63,23 +69,32 @@ export default function PostCard({ post, commentLimit, callback }) {
 
     function cancelEdit() {
         setEditingPost(false)
+        addToast({
+            title: "Cancelled",
+            description: "Edit cancelled",
+            color: "warning",
+        })
     }
 
-    return (
+    return <>
+        <div className="fixed z-[100]">
+            <ToastProvider placement={placement} toastOffset={placement.includes("top") ? 60 : 0} />
+        </div>
+
         <div className="bg-white dark:bg-gray-900 dark:text-gray-100 w-full rounded-md shadow-md h-auto py-3 px-3 my-5">
             <div className="flex justify-between items-center h-16 w-full">
                 <PostHeader
                     photo={userData?._id === post?.user?._id ? userData.photo : post.user.photo}
                     name={post.user.name}
                     date={new Date(post.createdAt).toISOString()}
-                />
+                    />
 
 
                 {userData?._id === post?.user?._id && (
                     <DropdownAction
-                        postId={post.id}
-                        callback={callback}
-                        onEditClick={handleEditPost}
+                    postId={post.id}
+                    callback={callback}
+                    onEditClick={handleEditPost}
                     />
                 )}
             </div>
@@ -108,16 +123,17 @@ export default function PostCard({ post, commentLimit, callback }) {
 
                     {comments.length > 0 && commentLimit
                         ? comments.map((comment) => (
-                                <Comment
+                            <Comment
                                     key={comment._id}
                                     comment={comment}
                                     postUserId={post.user._id}
                                     callback={getPostComments}
                                 />
                             ))
-                        : comments[0] && <Comment comment={comments[0]} postUserId={post.user._id} />}
+                            : comments[0] && <Comment comment={comments[0]} postUserId={post.user._id} />}
                 </>
             )}
         </div>
-    )
+            </>
+    
 }

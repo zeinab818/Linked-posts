@@ -2,13 +2,14 @@ import React, { useState } from 'react'
 import { Button, Spinner } from '@heroui/react'
 import { createPostApi } from '../../Services/createPostService'
 import { updatePostApi } from '../../Services/postServices'
-import { addToast } from "@heroui/toast";
+import { addToast, ToastProvider } from "@heroui/toast";
 
 export default function CreatePost({ callback, initialData, cancelEdit }) {
     const [postBody, setPostBody] = useState(initialData?.body || '')
     const [image, setImage] = useState(null)
     const [imageURL, setImageURL] = useState(initialData?.image || null)
     const [loading, setLoading] = useState(false)
+    const [placement] = React.useState("top-center");
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -54,7 +55,11 @@ export default function CreatePost({ callback, initialData, cancelEdit }) {
     }
 
 
-    return (
+    return <>
+          <div className="fixed z-[100]">
+            <ToastProvider placement={placement} toastOffset={placement.includes("top") ? 60 : 0} />
+          </div>
+
         <div className="relative bg-white w-full rounded-md shadow-md py-3 px-3 my-5 dark:bg-gray-700">
             <form onSubmit={handleSubmit}>
                 <textarea
@@ -107,5 +112,5 @@ export default function CreatePost({ callback, initialData, cancelEdit }) {
                 )}
             </form>
         </div>
-    )
+    </>
 }

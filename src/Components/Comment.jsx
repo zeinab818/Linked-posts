@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import PostHeader from './Card/PostHeader'
 import { AuthContext } from '../Context/AuthContext'
 import DropdownAction from './DropdownAction'
-import { Input, Button } from '@heroui/react'
+import { Input, Button, addToast, ToastProvider } from '@heroui/react'
 import { updateCommentApi } from '../Services/createComment'
 
 export default function Comment({ comment, postUserId, callback }) {
@@ -10,6 +10,7 @@ export default function Comment({ comment, postUserId, callback }) {
     const [editingComment, setEditingComment] = useState(false)
     const [editContent, setEditContent] = useState(comment?.content || '')
     const [loading, setLoading] = useState(false)
+    const [placement] = React.useState("top-center");
 
     if (!comment) return null
 
@@ -20,7 +21,19 @@ export default function Comment({ comment, postUserId, callback }) {
         if (response.message) {
             comment.content = editContent 
             setEditingComment(false)
+            addToast({
+                    title: "Success",
+                    description: "Comment updated successfully",
+                    color: "success",
+                })
             if (typeof callback === 'function') await callback()
+        }
+        else{
+            addToast({
+                    title: "Error",
+                    description: response.error || "Cannot update comment",
+                    color: "danger",
+                })
         }
         setLoading(false)
     }
@@ -28,9 +41,17 @@ export default function Comment({ comment, postUserId, callback }) {
     function cancelEdit() {
         setEditingComment(false)
         setEditContent(comment.content)
+        addToast({
+            title: "Cancelled",
+            description: "Edit cancelled",
+            color: "warning",
+        })
     }
 
-    return (
+    return <>
+        <div className="fixed z-[100]">
+                    <ToastProvider placement={placement} toastOffset={placement.includes("top") ? 60 : 0} />
+                </div>
         <div className="bg-gray-200 -mx-3 -mb-3 p-4 rounded-b-md dark:bg-gray-700">
             <div className="flex justify-between items-center">
 
@@ -64,5 +85,6 @@ export default function Comment({ comment, postUserId, callback }) {
                 <p className="p-4">{comment.content}</p>
             )}
         </div>
-    )
+                </>
+    
 }

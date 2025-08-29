@@ -6,12 +6,15 @@ import { sendLoginData } from '../Services/authServices';
 import { Link, useNavigate } from 'react-router-dom';
 import { schema } from '../Schema/LoginSchema';
 import { AuthContext } from '../Context/AuthContext';
+import { addToast, ToastProvider } from "@heroui/react";
 
 export default function Login() {    
     
     
     const [loading, setLoading] = useState(false);
-    const [apiError, setApiError] = useState(null)
+    const [apiError, setApiError] = useState(null);
+    const [placement] = React.useState("top-center");
+    
 
 const {handleSubmit , register , formState:{errors , touchedFields}}= useForm({
         defaultValues:{
@@ -26,17 +29,27 @@ const {handleSubmit , register , formState:{errors , touchedFields}}= useForm({
     const navigate=useNavigate();
     const {setIsLoggedIn}=useContext(AuthContext);
 
-    async function signUp(userData){
+    async function signIn(userData){
 
         setLoading(true);
         const response= await sendLoginData(userData);
         if(response.message){
             localStorage.setItem('token', response.token);
             setIsLoggedIn(true);
-            navigate('/') 
+            addToast({
+                title: "Login Successful 🎉",
+                description: "You login successfully",
+                color: "success",
+            });
+            setTimeout(() =>navigate('/') ,2000)
         }
         else{
             setApiError(response.error)
+            addToast({
+                title: "Login Failed ❌",
+                description: response.error || "Something went wrong",
+                color: "danger",
+            });
 
         }
         setLoading(false);
@@ -44,10 +57,13 @@ const {handleSubmit , register , formState:{errors , touchedFields}}= useForm({
             
     }
     return <>
-    
+          {/* ✅ ToastProvider لازم يكون ظاهر مرة واحدة فوق */}
+                <div className="fixed z-[100]">
+                    <ToastProvider placement={placement} toastOffset={placement.includes("top") ? 60 : 0} />
+                </div>
         <div className="login dark:bg-gray-900 w-full md:w-2/3 lg:w-1/2 max-w-md mx-auto bg-white py-10 px-6 rounded-2xl shadow-2xl">
             <h1 className="text-3xl mb-4 ">Login Now</h1>
-            <form onSubmit={handleSubmit(signUp)} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit(signIn)} className="flex flex-col gap-4">
                 <Input 
                 isInvalid={Boolean(errors.email && touchedFields.email)} 
                 errorMessage={errors.email?.message} 

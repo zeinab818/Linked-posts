@@ -1,5 +1,5 @@
 // Pages/ChangePassword.jsx
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -7,10 +7,13 @@ import {userChangePasswordApi} from './../Services/profileServices'
 import { useNavigate } from "react-router-dom";
 import { schemaChangePassword } from './../Schema/ChangePasswordShema';
 import { AuthContext } from "../Context/AuthContext";
+import { addToast, ToastProvider } from "@heroui/toast";
 
 export default function ChangePassword() {
   const navigate = useNavigate();
   const {setIsLoggedIn} = useContext(AuthContext);
+  const [placement] = useState("top-center");
+  
 
 
   const {
@@ -30,22 +33,34 @@ export default function ChangePassword() {
         setIsLoggedIn(false)
         localStorage.removeItem("token");
         reset();
+        addToast({
+                    title: "Success",
+                    description: "Password Changed successfully" ,
+                    color: "success",
+                })
         navigate("/login");
       } else {
         alert(res?.error || "Something went wrong");
       }
     } catch (error) {
       console.error(error);
-      alert("Failed to change password");
+      addToast({
+                          title: "warning",
+                          description: "Can not change password" ,
+                          color: "warning",
+                      })
     }
   };
 
-  return (
+  return <>
+        <div className="fixed z-[100]">
+            <ToastProvider placement={placement} toastOffset={placement.includes("top") ? 60 : 0} />
+        </div>
     <div className="flex dark:bg-gray-800 justify-center items-center h-screen bg-gray-100">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white p-6 rounded-2xl shadow-lg w-96 space-y-4 dark:bg-gray-900" 
-      >
+        >
         <h2 className="text-xl font-semibold text-center">Change Password</h2>
 
         <div>
@@ -54,7 +69,7 @@ export default function ChangePassword() {
             type="password"
             {...register("oldPassword")}
             className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"
-          />
+            />
           {errors.oldPassword && (
             <p className="text-red-500 text-sm mt-1">
               {errors.oldPassword.message}
@@ -68,7 +83,7 @@ export default function ChangePassword() {
             type="password"
             {...register("newPassword")}
             className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"
-          />
+            />
           {errors.newPassword && (
             <p className="text-red-500 text-sm mt-1">
               {errors.newPassword.message}
@@ -80,10 +95,11 @@ export default function ChangePassword() {
           type="submit"
           disabled={isSubmitting}
           className="w-full bg-blue-600 dark:bg-gray-700 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-        >
+          >
           {isSubmitting ? "Changing..." : "Change Password"}
         </button>
       </form>
     </div>
-  );
+          </>
+
 }
