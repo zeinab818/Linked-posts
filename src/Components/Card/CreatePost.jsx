@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button, Spinner } from '@heroui/react'
 import { createPostApi } from '../../Services/createPostService'
 import { updatePostApi } from '../../Services/postServices'
+import { addToast } from "@heroui/toast";
 
 export default function CreatePost({ callback, initialData, cancelEdit }) {
     const [postBody, setPostBody] = useState(initialData?.body || '')
@@ -26,8 +27,24 @@ export default function CreatePost({ callback, initialData, cancelEdit }) {
             setImage(null)
             setImageURL(null)
             if (cancelEdit) cancelEdit()
+            addToast({
+                title: "Success",
+                description: initialData ? "Post updated successfully" : "Post created successfully",
+                color: "success",
+            })
+        } else {
+
+            addToast({
+                title: "Error",
+                description: "Something went wrong, please try again.",
+                color: "danger",
+            })
+           
+     
         }
+         
         setLoading(false)
+
     }
 
     function handleImage(e) {
@@ -36,15 +53,17 @@ export default function CreatePost({ callback, initialData, cancelEdit }) {
         e.target.value = ''
     }
 
+
     return (
-        <div className="relative bg-white w-full rounded-md shadow-md py-3 px-3 my-5">
+        <div className="relative bg-white w-full rounded-md shadow-md py-3 px-3 my-5 dark:bg-gray-700">
             <form onSubmit={handleSubmit}>
                 <textarea
                     value={postBody}
                     onChange={(e) => setPostBody(e.target.value)}
                     placeholder="Create Post, What's on Your Mind...."
-                    className="border bg-gray-100 resize-none rounded-2xl w-full p-4"
+                    className="border bg-gray-100 dark:bg-gray-800 dark:border-gray-900 resize-none rounded-2xl w-full p-4"
                     rows={4}
+
                 />
                 {imageURL && (
                     <div className="relative">
@@ -71,11 +90,11 @@ export default function CreatePost({ callback, initialData, cancelEdit }) {
                     </label>
                     <div className="flex gap-2">
                         {cancelEdit && (
-                            <Button color="secondary" onClick={cancelEdit}>
+                            <Button color="secondary" className='dark:bg-red-950' onClick={cancelEdit}>
                                 Cancel
                             </Button>
                         )}
-                        <Button type="submit" color="primary">
+                        <Button type="submit" color="primary" className='dark:bg-gray-900'>
                             {initialData ? 'Update' : 'Post'}
                         </Button>
                     </div>

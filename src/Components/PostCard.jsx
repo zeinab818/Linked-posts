@@ -8,6 +8,8 @@ import { Button, Input } from '@heroui/react'
 import { createCommentApi, getPostCommentsApi } from '../Services/createComment'
 import DropdownAction from './DropdownAction'
 import CreatePost from './Card/CreatePost'
+import { useMutation } from '@tanstack/react-query'
+import { queryClient } from '../main'
 
 export default function PostCard({ post, commentLimit, callback }) {
     const { userData } = useContext(AuthContext)
@@ -29,12 +31,22 @@ export default function PostCard({ post, commentLimit, callback }) {
         setLoading(true)
         const response = await createCommentApi(post.id, commentContent)
         if (response.message) {
-            setComments(response.comments) // يحدث الكومنتات فورًا
+            setComments(response.comments) 
             setCommentContent('')
-            if (typeof callback === 'function') await callback() // لتحديث البوستات لو حابة
+            if (typeof callback === 'function') await callback() 
+                
         }
         setLoading(false)
     }
+    // let {mutate:createComment,isPending}=useMutation({
+    //     mutationKey:['create-comment'],
+    //     mutationFn:({postId,content})=>createCommentApi(post.id, commentContent),
+    //     onSuccess: async (data)=>{
+    //         setCommentContent('')
+    //         await queryClient.invalidateQueries(['posts'])
+
+    //     },
+    // })
 
     async function getPostComments() {
         const response = await getPostCommentsApi(post.id)
@@ -54,13 +66,14 @@ export default function PostCard({ post, commentLimit, callback }) {
     }
 
     return (
-        <div className="bg-white w-full rounded-md shadow-md h-auto py-3 px-3 my-5">
+        <div className="bg-white dark:bg-gray-900 dark:text-gray-100 w-full rounded-md shadow-md h-auto py-3 px-3 my-5">
             <div className="flex justify-between items-center h-16 w-full">
                 <PostHeader
-            photo={userData?._id === post?.user?._id ? userData.photo : post.user.photo}
-            name={post.user.name}
-            date={post.createdAt}
-        />
+                    photo={userData?._id === post?.user?._id ? userData.photo : post.user.photo}
+                    name={post.user.name}
+                    date={new Date(post.createdAt).toISOString()}
+                />
+
 
                 {userData?._id === post?.user?._id && (
                     <DropdownAction
@@ -86,9 +99,9 @@ export default function PostCard({ post, commentLimit, callback }) {
                             value={commentContent}
                             onChange={(e) => setCommentContent(e.target.value)}
                             variant="bordered"
-                            placeholder="commmnt........"
+                            placeholder="comment........"
                         />
-                        <Button isLoading={loading} type="submit" disabled={commentContent.length < 2} color="primary">
+                        <Button className='dark:bg-gray-700' isLoading={loading} type="submit" disabled={commentContent.length < 2} color="primary">
                             Add comment
                         </Button>
                     </form>

@@ -1,14 +1,17 @@
 // Pages/ChangePassword.jsx
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {userChangePasswordApi} from './../Services/profileServices'
 import { useNavigate } from "react-router-dom";
 import { schemaChangePassword } from './../Schema/ChangePasswordShema';
+import { AuthContext } from "../Context/AuthContext";
 
 export default function ChangePassword() {
   const navigate = useNavigate();
+  const {setIsLoggedIn} = useContext(AuthContext);
+
 
   const {
     register,
@@ -23,14 +26,10 @@ export default function ChangePassword() {
     try {
       const res = await userChangePasswordApi(data);
 
-      if (res?.message === "success") {
-        // مسح التوكين علشان يعيد تسجيل الدخول
+      if (res?.message) {
+        setIsLoggedIn(false)
         localStorage.removeItem("token");
-
-        // مسح الـ form
         reset();
-
-        // توجيه لصفحة الـ login
         navigate("/login");
       } else {
         alert(res?.error || "Something went wrong");
@@ -42,10 +41,10 @@ export default function ChangePassword() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="flex dark:bg-gray-800 justify-center items-center h-screen bg-gray-100">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-6 rounded-2xl shadow-lg w-96 space-y-4"
+        className="bg-white p-6 rounded-2xl shadow-lg w-96 space-y-4 dark:bg-gray-900" 
       >
         <h2 className="text-xl font-semibold text-center">Change Password</h2>
 
@@ -80,7 +79,7 @@ export default function ChangePassword() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+          className="w-full bg-blue-600 dark:bg-gray-700 text-white py-2 rounded-lg hover:bg-blue-700 transition"
         >
           {isSubmitting ? "Changing..." : "Change Password"}
         </button>

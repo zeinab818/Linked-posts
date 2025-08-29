@@ -73,7 +73,9 @@ export async function updateCommentApi(commentId ,commentContent) {
                 }
             }
         );
-
+        
+        console.log(res.data);
+        
         return res.data;
     } catch (error) {
         console.error(error);

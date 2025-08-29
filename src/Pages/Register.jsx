@@ -43,7 +43,7 @@ const {handleSubmit , register , formState:{errors , touchedFields}}= useForm({
     }
     return <>
     
-            <div className="register lg:w-1/2 md:w-2/3 sl:w-full mx-auto bg-white py-10 px-6 rounded-2xl shadow-2xl min-w-md">
+            <div className="register dark:bg-gray-900 lg:w-1/2 md:w-2/3 sl:w-full mx-auto bg-white py-10 px-6 rounded-2xl shadow-2xl min-w-md">
                 <h1 className='text-3xl mb-4'>Register Now</h1>
                 <form onSubmit={handleSubmit(signUp)} className='flex flex-col gap-4'>
                     <Input isInvalid={Boolean(errors.name && touchedFields.name)} errorMessage={errors.name?.message}
@@ -61,8 +61,8 @@ const {handleSubmit , register , formState:{errors , touchedFields}}= useForm({
                             <SelectItem key={'female'}>FeMale</SelectItem>
                         </Select>
                     </div>
-                    <Button isLoading={loading} type='submit'>Register</Button>
-                    <div>If you have already an account <Link to={'/login'} className='text-blue-900'>Log In</Link></div>
+                    <Button className='dark:bg-gray-800' isLoading={loading} type='submit'>Register</Button>
+                    <div>If you have already an account <Link to={'/login'} className='text-blue-900 dark:text-gray-400 text-xl'>Log In</Link></div>
                     
                     {apiError && <span className='text-center text-red-800'>{apiError}</span>}
                 </form>

@@ -12,7 +12,7 @@ export default function PostFooter({commentNumbers ,postId,onCommentClick}) {
                         <svg className="w-3 h-3 fill-current stroke-current text-white" xmlns="http://www.w3.org/2000/svg" width={27} height={27} viewBox="0 0 24 24" fill="none" stroke="#b0b0b0" strokeWidth={2} strokeLinecap="square" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
                     </div>
                 <div className="w-full flex justify-between">
-                    <p className="ml-3 text-gray-500">8</p>
+                    <p className="ml-3 text-gray-500">{Math.floor(Math.random() * 1000)}</p>
                     <Link to={'/post-details/'+postId}><p className="ml-3 text-gray-500">{commentNumbers} comments</p></Link>
                 </div>
                 </div>

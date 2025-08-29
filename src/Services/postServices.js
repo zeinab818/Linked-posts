@@ -1,10 +1,9 @@
 import axios from "axios";
 
 
-export async function getAllPostsApi() {
+export  function getAllPostsApi() {
     
-    try{
-        let {data}= await axios.get('https://linked-posts.routemisr.com/posts',{
+        return axios.get('https://linked-posts.routemisr.com/posts',{
             headers:{
                 token:localStorage.getItem('token'),
                 Authorization: "Bearer " + localStorage.getItem("token")
@@ -13,38 +12,20 @@ export async function getAllPostsApi() {
                 limit : 55,
                 sort : '-createdAt',
             }
-        })
-        console.log(data);
-        return data;
-    
-    }
-    catch(err){
-        console.log(err.response.data);
-        return err.response.data;
-        
-    }
+        })   
 }
 
 
 
-export async function getSinglePostsApi(postId) {
+export function getSinglePostsApi(postId) {
     
-    try{
-        let {data}= await axios.get('https://linked-posts.routemisr.com/posts/'+ postId,{
+        return axios.get('https://linked-posts.routemisr.com/posts/'+ postId,{
             headers:{
                 token:localStorage.getItem('token')
             }
             
         })
-        console.log(data);
-        return data;
-    
-    }
-    catch(err){
-        console.log(err.response.data);
-        return err.response.data;
-        
-    }
+
 }
 
 export async function deletePostApi(postId) {

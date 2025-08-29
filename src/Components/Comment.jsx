@@ -18,7 +18,7 @@ export default function Comment({ comment, postUserId, callback }) {
         setLoading(true)
         const response = await updateCommentApi(comment._id, { content: editContent })
         if (response.message) {
-            comment.content = editContent // يحدث الكومنت محليًا فورًا
+            comment.content = editContent 
             setEditingComment(false)
             if (typeof callback === 'function') await callback()
         }
@@ -31,7 +31,7 @@ export default function Comment({ comment, postUserId, callback }) {
     }
 
     return (
-        <div className="bg-gray-200 -mx-3 -mb-3 p-4 rounded-b-md">
+        <div className="bg-gray-200 -mx-3 -mb-3 p-4 rounded-b-md dark:bg-gray-700">
             <div className="flex justify-between items-center">
 
                 {/* <PostHeader name={comment.commentCreator.name} photo={comment.commentCreator.photo} date={comment.createdAt} /> */}
@@ -51,12 +51,12 @@ export default function Comment({ comment, postUserId, callback }) {
             </div>
 
             {editingComment ? (
-                <div className="flex gap-2 mt-2">
-                    <Input value={editContent} onChange={(e) => setEditContent(e.target.value)} variant="bordered" />
-                    <Button isLoading={loading} onClick={handleUpdateComment} color="primary">
+                <div className="flex gap-2 mt-2 dark:bg-gray-700">
+                    <Input className='dark:border-gray-200' value={editContent} onChange={(e) => setEditContent(e.target.value)} variant="bordered" />
+                    <Button isLoading={loading} onClick={handleUpdateComment} color="primary" className='dark:bg-gray-900' >
                         Save
                     </Button>
-                    <Button onClick={cancelEdit} color="danger">
+                    <Button onClick={cancelEdit} color="danger" className='dark:bg-red-950'>
                         Cancel
                     </Button>
                 </div>
