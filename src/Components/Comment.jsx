@@ -20,6 +20,7 @@ export default function Comment({ comment, postUserId, callback }) {
         const response = await updateCommentApi(comment._id, { content: editContent })
         if (response.message) {
             comment.content = editContent 
+            setLoading(false)
             setEditingComment(false)
             addToast({
                     title: "Success",
@@ -35,7 +36,6 @@ export default function Comment({ comment, postUserId, callback }) {
                     color: "danger",
                 })
         }
-        setLoading(false)
     }
 
     function cancelEdit() {

@@ -8,7 +8,7 @@ export  function getUserPostsApi(userId) {
             },
             params: {
                 // limit : 200,
-                // sort : '-createdAt',
+                // sort : '-createdAt'
             },
         }
         );

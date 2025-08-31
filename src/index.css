@@ -3,3 +3,26 @@
 @custom-variant dark (&:where(.dark, .dark *));
 /* Note: You may need to change the path to fit your project structure */
 @source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+
+
+#root{
+height: 100vh;
+}
+
+
+/* Dark Mode scrollbar */
+.dark ::-webkit-scrollbar-track {
+  background: #0b1220;  /* قريب من gray-900 */
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #64748b;  /* slate-500 */
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;  /* slate-400 */
+}
+
+/* Firefox */
+.dark {
+  scrollbar-color: #64748b #0b1220;
+}
+

@@ -23,7 +23,7 @@ export default function PostCard({ post, commentLimit, callback }) {
     const [loading, setLoading] = useState(false)
     const [comments, setComments] = useState(post.comments || [])
     const [placement, setPlacement] = React.useState("top-center");
-    
+
 
     const [editingPost, setEditingPost] = useState(false)
     const [editData, setEditData] = useState({ body: post.body, image: post.image, id: post.id })
@@ -33,16 +33,22 @@ export default function PostCard({ post, commentLimit, callback }) {
         setLoading(true)
         const response = await createCommentApi(post.id, commentContent)
         if (response.message) {
-            setComments(response.comments) 
+            setLoading(false)
+            setComments(response.comments)
+            addToast({
+                title: "Success",
+                description: "comment created successfully",
+                color: "success",
+            })
             setCommentContent('')
-            if (typeof callback === 'function') await callback() 
-                addToast({
-                    title: "Success",
-                    description: "comment created successfully" ,
-                    color: "success",
-                })
+            // if (typeof callback === 'function') await callback() 
+            //     addToast({
+            //         title: "Success",
+            //         description: "comment created successfully" ,
+            //         color: "success",
+            //     })
         }
-        setLoading(false)
+        // setLoading(false)
     }
     // let {mutate:createComment,isPending}=useMutation({
     //     mutationKey:['create-comment'],
@@ -87,14 +93,14 @@ export default function PostCard({ post, commentLimit, callback }) {
                     photo={userData?._id === post?.user?._id ? userData.photo : post.user.photo}
                     name={post.user.name}
                     date={new Date(post.createdAt).toISOString()}
-                    />
+                />
 
 
                 {userData?._id === post?.user?._id && (
                     <DropdownAction
-                    postId={post.id}
-                    callback={callback}
-                    onEditClick={handleEditPost}
+                        postId={post.id}
+                        callback={callback}
+                        onEditClick={handleEditPost}
                     />
                 )}
             </div>
@@ -124,16 +130,16 @@ export default function PostCard({ post, commentLimit, callback }) {
                     {comments.length > 0 && commentLimit
                         ? comments.map((comment) => (
                             <Comment
-                                    key={comment._id}
-                                    comment={comment}
-                                    postUserId={post.user._id}
-                                    callback={getPostComments}
-                                />
-                            ))
-                            : comments[0] && <Comment comment={comments[0]} postUserId={post.user._id} />}
+                                key={comment._id}
+                                comment={comment}
+                                postUserId={post.user._id}
+                                callback={getPostComments}
+                            />
+                        ))
+                        : comments[0] && <Comment comment={comments[0]} postUserId={post.user._id} />}
                 </>
             )}
         </div>
-            </>
-    
+    </>
+
 }

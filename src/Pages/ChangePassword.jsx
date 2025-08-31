@@ -12,7 +12,9 @@ import { addToast, ToastProvider } from "@heroui/toast";
 export default function ChangePassword() {
   const navigate = useNavigate();
   const {setIsLoggedIn} = useContext(AuthContext);
-  const [placement] = useState("top-center");
+  const [placement
+    
+  ] = useState("top-center");
   
 
 
