@@ -10,7 +10,10 @@ export const schema=zod.object({
         .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/ ,'Email must be a valid address (e.g. name@example.com)'),
 
     password:zod.string().nonempty('Password Is Required')
-        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,'Password must be at least 8 characters, include uppercase, lowercase, number, and special character'),
+        .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*?#&]{8,}$/,
+        'Password must be at least 8 characters, include uppercase, lowercase, number, and special character'
+        ),
     
     rePassword:zod.string().nonempty('RePassword Is Required'),
     gender:zod.coerce.string().nonempty('Gender Is Required'),
