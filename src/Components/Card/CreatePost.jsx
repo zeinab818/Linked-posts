@@ -102,14 +102,15 @@ export default function CreatePost({ callback, initialData, cancelEdit }) {
                         <span>Image</span>
                     </label>
                     <div className="flex gap-2">
+                        
+                        <Button type="submit" color="primary" className='dark:bg-gray-900'>
+                            {initialData ? 'Update' : 'Post'}
+                        </Button>
                         {cancelEdit && (
                             <Button color="secondary" className='dark:bg-red-950' onClick={cancelEdit}>
                                 Cancel
                             </Button>
                         )}
-                        <Button type="submit" color="primary" className='dark:bg-gray-900'>
-                            {initialData ? 'Update' : 'Post'}
-                        </Button>
                     </div>
                 </div>
 

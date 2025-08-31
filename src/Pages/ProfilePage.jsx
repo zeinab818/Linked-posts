@@ -39,11 +39,10 @@ export default function ProfilePage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 dark:text-gray-100">
             <img
-              src={userData?.photo}
-              alt="profile"
-              className="w-10 h-10 rounded-full object-cover"
-            />
-            <span className="font-semibold">{userData?.name}</span>
+              src={userData?.photo || ''}
+              alt={userData?.name}
+              className="w-10 h-10 rounded-full object-cover"/>
+            <span className="font-semibold">{userData?.name || " "}</span>
           </div>
           <Dropdown>
             <DropdownTrigger >

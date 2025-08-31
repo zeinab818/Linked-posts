@@ -77,7 +77,7 @@ export default function Comment({ comment, postUserId, callback }) {
                     <Button isLoading={loading} onClick={handleUpdateComment} color="primary" className='dark:bg-gray-900' >
                         Save
                     </Button>
-                    <Button onClick={cancelEdit} color="danger" className='dark:bg-red-950'>
+                    <Button onClick={cancelEdit} color="secondary" className='dark:bg-red-950'>
                         Cancel
                     </Button>
                 </div>
