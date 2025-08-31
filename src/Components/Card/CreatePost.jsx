@@ -13,6 +13,14 @@ export default function CreatePost({ callback, initialData, cancelEdit }) {
 
     async function handleSubmit(e) {
         e.preventDefault()
+        if (!postBody.trim() && !image) {
+            addToast({
+            title: "Missing Content",
+            description: "You must write something or upload an image.",
+            color: "warning",
+            });
+            return; 
+        }
         setLoading(true)
         const formData = new FormData()
         formData.append('body', postBody)
