@@ -18,7 +18,7 @@ A simple social media web app where users can share posts, interact, and connect
 
 ## 🛠️ Tech Stack
 - **Frontend:** React.js  
-- **UI Components:** HeroUI  
+- **UI Components:** HeroUI  + Tailwind CSS 
 - **State & Data Fetching:** React Query  
 - **Backend:** REST API  
 
